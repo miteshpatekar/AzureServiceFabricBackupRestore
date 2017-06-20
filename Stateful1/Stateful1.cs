@@ -46,16 +46,12 @@ namespace Stateful1
             //       or remove this RunAsync override if it's not needed in your service.
 
             var myDictionary = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, long>>("myDictionary");
-            //fabric:/ServiceFabricBackupRestore/BackupActorService
 
-           // IBackupActorService backupactorclient = ServiceProxy.Create<IBackupActorService>(new Uri("fabric:/ServiceFabricBackupRestore/BackupActorService"));
 
-           // await backupactorclient.PeriodicTakeBackupAsync();
+            //IBackupActorService myActorServiceProxy = ActorServiceProxy.Create<IBackupActorService>(
+            //    new Uri("fabric:/ServiceFabricBackupRestore/BackupActorService"), ActorId.CreateRandom());
 
-            IBackupActorService myActorServiceProxy = ActorServiceProxy.Create<IBackupActorService>(
-                new Uri("fabric:/ServiceFabricBackupRestore/BackupActorService"), ActorId.CreateRandom());
-
-            await myActorServiceProxy.PeriodicTakeBackupAsync();
+           // await myActorServiceProxy.PeriodicTakeBackupAsync();
 
             while (true)
             {
@@ -65,8 +61,8 @@ namespace Stateful1
                 {
                     var result = await myDictionary.TryGetValueAsync(tx, "Counter");
 
-                    ServiceEventSource.Current.ServiceMessage(this.Context, "Current Counter Value: {0}",
-                        result.HasValue ? result.Value.ToString() : "Value does not exist.");
+                    //ServiceEventSource.Current.ServiceMessage(this.Context, "Current Counter Value: {0}",
+                    //    result.HasValue ? result.Value.ToString() : "Value does not exist.");
 
                     await myDictionary.AddOrUpdateAsync(tx, "Counter", 0, (key, value) => ++value);
 

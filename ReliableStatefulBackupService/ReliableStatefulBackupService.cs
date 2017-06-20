@@ -11,26 +11,17 @@ using Microsoft.ServiceFabric.Data;
 using System.IO;
 using BackupActor.Interfaces;
 
-namespace StatefulBackupService
-{  
-    /// <summary>
-    /// An instance of this class is created for each service replica by the Service Fabric runtime.
-    /// </summary>
-    internal sealed class StatefulBackupService : StatefulService
+namespace ReliableStatefulBackupService
+{    
+    internal sealed class ReliableStatefulBackupService : StatefulService
     {
         private AzureBlobBackupManager backupManager;
         private const string BackupCountDictionaryName = "BackupCountingDictionary";
-        public StatefulBackupService(StatefulServiceContext context)
+        public ReliableStatefulBackupService(StatefulServiceContext context)
             : base(context)
         { }
 
-        /// <summary>
-        /// Optional override to create listeners (e.g., HTTP, Service Remoting, WCF, etc.) for this service replica to handle client or user requests.
-        /// </summary>
-        /// <remarks>
-        /// For more information on service communication, see https://aka.ms/servicefabricservicecommunication
-        /// </remarks>
-        /// <returns>A collection of listeners.</returns>
+       
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
         {
             return new ServiceReplicaListener[0];
@@ -45,9 +36,7 @@ namespace StatefulBackupService
             {
                 string backupFolder;
 
-
                 backupFolder = await this.backupManager.RestoreLatestBackupToTempLocation(cancellationToken);
-
 
                 ServiceEventSource.Current.ServiceMessage(this.Context, "Restoration Folder Path " + backupFolder);
 
@@ -81,8 +70,12 @@ namespace StatefulBackupService
 
                 await Task.Delay(TimeSpan.FromSeconds(this.backupManager.backupFrequencyInSeconds));
 
+                BackupDescription backupDescription;
 
-                BackupDescription backupDescription = new BackupDescription(BackupOption.Full, this.BackupCallbackAsync);
+               // if (backupsTaken==0)
+                    backupDescription = new BackupDescription(BackupOption.Full, this.BackupCallbackAsync);
+              //  else
+              //      backupDescription = new BackupDescription(BackupOption.Incremental, this.BackupCallbackAsync);
 
                 await this.BackupAsync(backupDescription, TimeSpan.FromHours(1), cancellationToken);
 
@@ -152,7 +145,6 @@ namespace StatefulBackupService
             }
         }
 
-        
         protected override async Task RunAsync(CancellationToken cancellationToken)
         {
             // TODO: Replace the following sample code with your own logic 

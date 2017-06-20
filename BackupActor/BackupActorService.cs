@@ -5,7 +5,6 @@ using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Remoting.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
-using StatefulBackupService;
 using System;
 using System.Collections.Generic;
 using System.Fabric;
@@ -27,6 +26,7 @@ namespace BackupActor
             _context = context;
         }
 
+
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
         {
             return new[]
@@ -44,9 +44,7 @@ namespace BackupActor
             {
                 string backupFolder;
 
-
                 backupFolder = await this.backupManager.RestoreLatestBackupToTempLocation(cancellationToken);
-
 
                 //  ServiceEventSource.Current.ServiceMessage(this.Context, "Restoration Folder Path " + backupFolder);
 
@@ -85,38 +83,14 @@ namespace BackupActor
                 backupsTaken++;
 
                 //ServiceEventSource.Current.ServiceMessage(this.Context, "Backup {0} taken", backupsTaken);
-
             }
         }
 
         private async Task<bool> BackupCallbackAsync(BackupInfo backupInfo, CancellationToken cancellationToken)
         {
-            //ServiceEventSource.Current.ServiceMessage(this.Context, "Inside backup callback for replica {0}|{1}", this.Context.PartitionId, this.Context.ReplicaId);
+            //ActorEventSource.Current.ServiceMessage(this.Context, "Inside backup callback for replica {0}|{1}", this.Context.PartitionId, this.Context.ReplicaId);
+            //ActorEventSource.Current.ActorMessage(this, "Inside backup callback for Actor id");
             long totalBackupCount;
-
-            // IReliableDictionary<string, long> backupCountDictionary =
-            //    await this.StateProvider.GetOrAddAsync<IReliableDictionary<string, long>>(BackupCountDictionaryName);
-            //IReliableDictionary<string, long> backupCountDictionary =
-            //    await _context
-            //using (ITransaction tx = this.StateManager.CreateTransaction())
-            //{
-            //    ConditionalValue<long> value = await backupCountDictionary.TryGetValueAsync(tx, "backupCount");
-
-            //    if (!value.HasValue)
-            //    {
-            //        totalBackupCount = 0;
-            //    }
-            //    else
-            //    {
-            //        totalBackupCount = value.Value;
-            //    }
-
-            //    await backupCountDictionary.SetAsync(tx, "backupCount", ++totalBackupCount);
-
-            //    await tx.CommitAsync();
-            //}
-
-            // ServiceEventSource.Current.Message("Backup count dictionary updated, total backup count is {0}", totalBackupCount);
 
             try
             {

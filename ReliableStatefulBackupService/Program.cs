@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Services.Runtime;
 
-namespace StatefulBackupService
+namespace ReliableStatefulBackupService
 {
     internal static class Program
     {
@@ -20,10 +20,10 @@ namespace StatefulBackupService
                 // When Service Fabric creates an instance of this service type,
                 // an instance of the class is created in this host process.
 
-                ServiceRuntime.RegisterServiceAsync("StatefulBackupServiceType",
-                    context => new StatefulBackupService(context)).GetAwaiter().GetResult();
+                ServiceRuntime.RegisterServiceAsync("ReliableStatefulBackupServiceType",
+                    context => new ReliableStatefulBackupService(context)).GetAwaiter().GetResult();
 
-                ServiceEventSource.Current.ServiceTypeRegistered(Process.GetCurrentProcess().Id, typeof(StatefulBackupService).Name);
+                ServiceEventSource.Current.ServiceTypeRegistered(Process.GetCurrentProcess().Id, typeof(ReliableStatefulBackupService).Name);
 
                 // Prevents this host process from terminating so services keep running.
                 Thread.Sleep(Timeout.Infinite);

@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Services.Runtime;
 
-namespace StatefulBackupService
+namespace ReliableStatefulBackupService
 {
-    [EventSource(Name = "MyCompany-ServiceFabricBackupRestore-StatefulBackupService")]
+    [EventSource(Name = "MyCompany-ServiceFabricBackupRestore-ReliableStatefulBackupService")]
     internal sealed class ServiceEventSource : EventSource
     {
         public static readonly ServiceEventSource Current = new ServiceEventSource();
