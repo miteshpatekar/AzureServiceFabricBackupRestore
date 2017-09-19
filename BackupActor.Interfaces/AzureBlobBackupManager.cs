@@ -35,8 +35,8 @@ namespace BackupActor.Interfaces
             this.keyMin = keymin;
             this.keyMax = keymax;
             
-            string backupAccountName = "lanternwesteurope";
-            string backupAccountKey = "78IryYwOdTF9Jhef6Ntg8u1IGczoLsT1Tp1vma/hkTu8NYlnJCoc2nXGuSrSEhb/7Pl+hyLZdPpzg9a/7eGmxw==";
+            string backupAccountName = "<your_azurestorage_accountname>";
+            string backupAccountKey = "<your_azurestorage_accountkey>";
             this.backupFrequencyInSeconds = 10;
             this.MaxBackupsToKeep = 5;
             this.partitionId = partitionId;
