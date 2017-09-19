@@ -32,8 +32,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BackupActor\BackupActor.csproj" />
-    <ProjectReference Include="..\ReliableStatefulBackupService\ReliableStatefulBackupService.csproj" />
-    <ProjectReference Include="..\Stateful1\Stateful1.csproj" />
+    <ProjectReference Include="..\BackupRestoreStatefulService\BackupRestoreStatefulService.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
   <PropertyGroup>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "ServiceFabricBackupRestore", "ServiceFabricBackupRestore\ServiceFabricBackupRestore.sfproj", "{3AB4152B-E122-40D0-8F9A-8A4F3DC8E807}"
 EndProject
@@ -9,9 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackupActor", "BackupActor\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackupActor.Interfaces", "BackupActor.Interfaces\BackupActor.Interfaces.csproj", "{FFE4D333-2942-47B7-968B-4AA860466C95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stateful1", "Stateful1\Stateful1.csproj", "{5D79DA58-F4FA-4E95-A1D8-6F8CA25F818D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReliableStatefulBackupService", "ReliableStatefulBackupService\ReliableStatefulBackupService.csproj", "{BE522C72-36E8-45B5-B193-1E85FF2FFABB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackupRestoreStatefulService", "BackupRestoreStatefulService\BackupRestoreStatefulService.csproj", "{549F0D84-7EF0-4A61-9236-17F121DF706D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,16 +31,15 @@ Global
 		{FFE4D333-2942-47B7-968B-4AA860466C95}.Debug|x64.Build.0 = Debug|x64
 		{FFE4D333-2942-47B7-968B-4AA860466C95}.Release|x64.ActiveCfg = Release|x64
 		{FFE4D333-2942-47B7-968B-4AA860466C95}.Release|x64.Build.0 = Release|x64
-		{5D79DA58-F4FA-4E95-A1D8-6F8CA25F818D}.Debug|x64.ActiveCfg = Debug|x64
-		{5D79DA58-F4FA-4E95-A1D8-6F8CA25F818D}.Debug|x64.Build.0 = Debug|x64
-		{5D79DA58-F4FA-4E95-A1D8-6F8CA25F818D}.Release|x64.ActiveCfg = Release|x64
-		{5D79DA58-F4FA-4E95-A1D8-6F8CA25F818D}.Release|x64.Build.0 = Release|x64
-		{BE522C72-36E8-45B5-B193-1E85FF2FFABB}.Debug|x64.ActiveCfg = Debug|x64
-		{BE522C72-36E8-45B5-B193-1E85FF2FFABB}.Debug|x64.Build.0 = Debug|x64
-		{BE522C72-36E8-45B5-B193-1E85FF2FFABB}.Release|x64.ActiveCfg = Release|x64
-		{BE522C72-36E8-45B5-B193-1E85FF2FFABB}.Release|x64.Build.0 = Release|x64
+		{549F0D84-7EF0-4A61-9236-17F121DF706D}.Debug|x64.ActiveCfg = Debug|x64
+		{549F0D84-7EF0-4A61-9236-17F121DF706D}.Debug|x64.Build.0 = Debug|x64
+		{549F0D84-7EF0-4A61-9236-17F121DF706D}.Release|x64.ActiveCfg = Release|x64
+		{549F0D84-7EF0-4A61-9236-17F121DF706D}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {54C3CC6C-A734-4D50-96FF-774E83D5A298}
 	EndGlobalSection
 EndGlobal

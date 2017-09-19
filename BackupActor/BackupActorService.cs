@@ -21,11 +21,10 @@ namespace BackupActor
         private AzureBlobBackupManager backupManager;
         StatefulServiceContext _context;
         public BackupService(StatefulServiceContext context, ActorTypeInformation actorTypeInfo)
-            : base(context, actorTypeInfo, null, null, new KvsActorStateProvider(true)) // Enable incremental backup
+            : base(context, actorTypeInfo, null, null, new KvsActorStateProvider(false)) // set true to enable incremental backup
         {
             _context = context;
         }
-
 
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
         {
@@ -37,22 +36,15 @@ namespace BackupActor
 
         protected override async Task<bool> OnDataLossAsync(RestoreContext restoreCtx, CancellationToken cancellationToken)
         {
-            // ServiceEventSource.Current.ServiceMessage(this.Context, "OnDataLoss Invoked!");
             this.SetupBackupManager();
 
             try
             {
                 string backupFolder;
-
                 backupFolder = await this.backupManager.RestoreLatestBackupToTempLocation(cancellationToken);
-
-                //  ServiceEventSource.Current.ServiceMessage(this.Context, "Restoration Folder Path " + backupFolder);
-
                 RestoreDescription restoreRescription = new RestoreDescription(backupFolder, RestorePolicy.Force);
 
                 await restoreCtx.RestoreAsync(restoreRescription, cancellationToken);
-
-                // ServiceEventSource.Current.ServiceMessage(this.Context, "Restore completed");
 
                 DirectoryInfo tempRestoreDirectory = new DirectoryInfo(backupFolder);
                 tempRestoreDirectory.Delete(true);
@@ -61,8 +53,6 @@ namespace BackupActor
             }
             catch (Exception e)
             {
-                //ServiceEventSource.Current.ServiceMessage(this.Context, "Restoration failed: " + "{0} {1}" + e.GetType() + e.Message);
-
                 throw;
             }
         }
@@ -72,31 +62,18 @@ namespace BackupActor
             long backupsTaken = 0;
             this.SetupBackupManager();
 
-            while (true)
-            {
-                await Task.Delay(TimeSpan.FromSeconds(this.backupManager.backupFrequencyInSeconds));
+            await Task.Delay(TimeSpan.FromSeconds(this.backupManager.backupFrequencyInSeconds));
+            BackupDescription backupDescription = new BackupDescription(BackupOption.Full, this.BackupCallbackAsync);
+            await this.BackupAsync(backupDescription);
 
-                BackupDescription backupDescription = new BackupDescription(BackupOption.Full, this.BackupCallbackAsync);
-
-                await this.BackupAsync(backupDescription);
-
-                backupsTaken++;
-
-                //ServiceEventSource.Current.ServiceMessage(this.Context, "Backup {0} taken", backupsTaken);
-            }
+            backupsTaken++;
         }
 
         private async Task<bool> BackupCallbackAsync(BackupInfo backupInfo, CancellationToken cancellationToken)
         {
-            //ActorEventSource.Current.ServiceMessage(this.Context, "Inside backup callback for replica {0}|{1}", this.Context.PartitionId, this.Context.ReplicaId);
-            //ActorEventSource.Current.ActorMessage(this, "Inside backup callback for Actor id");
-            long totalBackupCount;
-
             try
             {
-                // ServiceEventSource.Current.ServiceMessage(this.Context, "Archiving backup");
                 await this.backupManager.ArchiveBackupAsync(backupInfo, cancellationToken);
-                // ServiceEventSource.Current.ServiceMessage(this.Context, "Backup archived");
             }
             catch (Exception e)
             {
@@ -104,9 +81,6 @@ namespace BackupActor
             }
 
             await this.backupManager.DeleteBackupsAsync(cancellationToken);
-
-            //  ServiceEventSource.Current.Message("Backups deleted");
-
             return true;
         }
 
