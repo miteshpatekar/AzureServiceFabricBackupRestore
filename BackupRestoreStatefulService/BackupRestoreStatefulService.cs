@@ -67,11 +67,11 @@ namespace BackupRestoreStatefulService
         {
             this.SetupBackupManager();
 
-                cancellationToken.ThrowIfCancellationRequested();
+            cancellationToken.ThrowIfCancellationRequested();
 
-                await Task.Delay(TimeSpan.FromSeconds(this.backupManager.backupFrequencyInSeconds));
-                BackupDescription backupDescription = new BackupDescription(BackupOption.Full, this.BackupCallbackAsync);
-                await this.BackupAsync(backupDescription, TimeSpan.FromHours(1), cancellationToken);             
+            await Task.Delay(TimeSpan.FromSeconds(this.backupManager.backupFrequencyInSeconds));
+            BackupDescription backupDescription = new BackupDescription(BackupOption.Full, this.BackupCallbackAsync);
+            await this.BackupAsync(backupDescription, TimeSpan.FromHours(1), cancellationToken);
         }
 
         private async Task<bool> BackupCallbackAsync(BackupInfo backupInfo, CancellationToken cancellationToken)
@@ -133,7 +133,7 @@ namespace BackupRestoreStatefulService
             }
         }
         protected override async Task RunAsync(CancellationToken cancellationToken)
-        {         
+        {
             // create a remote connecting proxy to actor of which backup needs to be taken
             IBackupActorService myActorServiceProxy = ActorServiceProxy.Create<IBackupActorService>(
                 new Uri("fabric:/ServiceFabricBackupRestore/BackupActorService"), ActorId.CreateRandom());
@@ -141,14 +141,14 @@ namespace BackupRestoreStatefulService
             while (true)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                
+
                 // call to take stateful service backup
                 await PeriodicTakeBackupAsync(cancellationToken);
 
                 // call to take actor backup
                 await myActorServiceProxy.PeriodicTakeBackupAsync();
                 using (var tx = this.StateManager.CreateTransaction())
-                {                   
+                {
                     // If an exception is thrown before calling CommitAsync, the transaction aborts, all changes are 
                     // discarded, and nothing is saved to the secondary replicas.
                     await tx.CommitAsync();
